@@ -25,7 +25,11 @@ module.exports = class Application{
      */
 
     constructor(PORT, DB_HOST){
-
+        this.configApplication();
+        this.createServer(PORT);
+        this.connetToMongoDB(DB_HOST);
+        this.createRoute();
+        this.errorHandler();
     }
 
 
