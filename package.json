@@ -1,0 +1,39 @@
+{
+  "name": "backend_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amirholya01/Final_BackEnd_Express.git"
+  },
+  "keywords": [
+    "nodejs-expressjs-mongodb"
+  ],
+  "author": "Amir Hossein Olyanasab Narab",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amirholya01/Final_BackEnd_Express/issues"
+  },
+  "homepage": "https://github.com/amirholya01/Final_BackEnd_Express#readme",
+  "dependencies": {
+    "auto-bind": "^4.0.0",
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-validator": "^6.15.0",
+    "http-errors": "^2.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongodb": "4.0",
+    "mongoose": "^6.2.4",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
