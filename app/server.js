@@ -8,6 +8,7 @@
 
 const morgan = require("morgan");  // HTTP request logger middleware
 const cookieParser = require("cookie-parser");  // Parse Cookie header and populate req.cookies
+const { AllRoutes } = require("./router/router");
 
 
 module.exports = class Application{
@@ -95,7 +96,7 @@ module.exports = class Application{
      */
 
     createRoute(){
-
+        this.#app.use(AllRoutes);
     }
 
 
