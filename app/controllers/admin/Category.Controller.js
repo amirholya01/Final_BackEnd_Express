@@ -90,6 +90,31 @@ class CategoryController extends Controller {
             next(error);
         }
     }
+
+
+
+    /**
+ * Retrieves all top-level categories from the database.
+ * Top-level categories are those with no parent specified.
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ * @returns {Object} - JSON response with top-level categories
+ */
+    async getAllCategories(req, res, next){
+        try {
+            // Retrieving all categories with no parent specified (top-level categories)
+            const categories = await CategoryModel.find({parent: null});
+            // Returning JSON response with top-level categories
+            return res.status(HttpStatus.OK).json({
+                data: {
+                    categories
+                }
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 // Export an instance of the CategoryController

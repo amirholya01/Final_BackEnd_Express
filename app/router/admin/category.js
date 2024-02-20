@@ -21,6 +21,8 @@ router.get("/category/parents", CategoryController.getAllParents);
  *              description: success
  */
 router.get("/category/children/:parent", CategoryController.getChildernOfParents);
+
+router.get("/category/all", CategoryController.getAllCategories);
 module.exports = {
     AdminApiCategoryRouter : router
 }
