@@ -64,7 +64,7 @@ class CategoryController extends Controller {
     async getAllParents(req, res, next){
         try {
             // Finding all categories with no parent specified
-            const parents = await CategoryModel.find({parent: null});
+            const parents = await CategoryModel.find({parent: null}, {__v: 0});
             // Returning JSON response with parent categories
             return res.status(HttpStatus.OK).json({
                 data: {
