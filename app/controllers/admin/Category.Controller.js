@@ -64,11 +64,51 @@ class CategoryController extends Controller {
     async getAllParents(req, res, next){
         try {
             // Finding all categories with no parent specified
-            const parents = await CategoryModel.find({parent: null});
+            const parents = await CategoryModel.find({parent: null}, {__v: 0});
             // Returning JSON response with parent categories
             return res.status(HttpStatus.OK).json({
                 data: {
                     parents
+                }
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
+    async getChildernOfParents(req, res, next){
+        try {
+            const parent = req.params;
+            const children = await CategoryModel.find({parent}, {__v: 0, });
+            return res.status(HttpStatus.OK).json({
+                data: {
+                    children
+                }
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
+
+    /**
+ * Retrieves all top-level categories from the database.
+ * Top-level categories are those with no parent specified.
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ * @returns {Object} - JSON response with top-level categories
+ */
+    async getAllCategories(req, res, next){
+        try {
+            // Retrieving all categories with no parent specified (top-level categories)
+            const categories = await CategoryModel.find({parent: null});
+            // Returning JSON response with top-level categories
+            return res.status(HttpStatus.OK).json({
+                data: {
+                    categories
                 }
             })
         } catch (error) {

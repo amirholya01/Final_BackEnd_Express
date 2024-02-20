@@ -10,6 +10,11 @@ const morgan = require("morgan");  // HTTP request logger middleware
 const cookieParser = require("cookie-parser");  // Parse Cookie header and populate req.cookies
 const { AllRoutes } = require("./router/router");
 
+// Importing the swagger-ui-express module which provides middleware to serve Swagger UI
+const swaggerUi = require("swagger-ui-express");
+// Importing the swagger-jsdoc module which helps in generating Swagger documentation
+const swaggerJsDoc = require("swagger-jsdoc");
+
 
 module.exports = class Application{
 
@@ -46,6 +51,26 @@ module.exports = class Application{
         this.#app.use(this.#express.json());  // Parse incoming request bodies as JSON
         this.#app.use(this.#express.urlencoded({extended : true}));  // Parse URL-encoded request bodies
         this.#app.use(cookieParser());  // Parse Cookie header and populate req.cookies
+
+        this.#app.use("/api-docs",swaggerUi.serve, swaggerUi.setup(swaggerJsDoc({
+            swaggerDefinition: {
+                openApi: "3.0.0",
+                info: {
+                    title: "Final Project-Express JS",
+                    version: "1.0.0",
+                    description: "Rest Api - category- course- user- blog ....",
+                    contact: {
+                        name: "Amir Hossein Olyanasab Narab"
+                    },
+                },
+                servers: [
+                    {
+                        url: "http://localhost:4500"
+                    }
+                ],
+            },
+            apis: ["./app/router/**/*.js"]
+        })))
     }
 
 
