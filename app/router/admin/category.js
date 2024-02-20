@@ -2,7 +2,7 @@ const {CategoryController} = require("../../controllers/admin/Category.Controlle
 const router = require("express").Router();
 
 router.post("/category/create", CategoryController.createCategory);
-
+router.get("/category/parents", CategoryController.getAllParents);
 module.exports = {
     AdminApiCategoryRouter : router
 }
