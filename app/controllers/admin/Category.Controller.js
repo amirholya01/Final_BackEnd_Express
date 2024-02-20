@@ -163,6 +163,59 @@ class CategoryController extends Controller {
     }
 
 
+
+
+
+        /**
+ * Retrieves a category and its children by ID from the database using aggregation.
+ * @param {Object} req - Express request object containing the category ID in params
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ * @returns {Object} - JSON response with the category and its children
+ * @throws {Error} - If an error occurs during the process
+ */
+    async getCategoryById(req, res, next) {
+        try {
+
+          // Extracting category ID from request parameters
+          const { id: _id } = req.params;
+
+
+          // Performing aggregation to retrieve the category and its children
+          const category = await CategoryModel.aggregate([
+            {
+              $match: { _id: mongoose.Types.ObjectId(_id) },
+            },
+            {
+              $lookup: {
+                from: "categories",
+                localField: "_id",
+                foreignField: "parent",
+                as: "children",
+              },
+            },
+            {
+              $project: {
+                __v: 0,
+                "children.__v": 0,
+                "children.parent": 0,
+              },
+            },
+          ]);
+
+          // Returning JSON response with the category and its children
+          return res.status(HttpStatus.OK).json({
+            statusCode: HttpStatus.OK,
+            data: {
+              category,
+            },
+          });
+        } catch (error) {
+          next(error);
+        }
+      }
+
+
     /**
  * Checks if a category with the given ID exists in the database.
  * If the category does not exist, it throws a 'Not Found' error.
