@@ -1,29 +1,57 @@
-const Controller = require("../Controller");
-const {CategoryModel} = require("../../models/category");
-const { createCategorySchema } = require("../../validation/admin/categorySchema");
-const {StatusCodes : HttpStatus} = require("http-status-codes");
-const createError = require("http-errors");
+// Import necessary modules and dependencies
+const Controller = require("../Controller"); // Import the base controller
+const { CategoryModel } = require("../../models/category"); // Import the CategoryModel for interacting with the database
+const { StatusCodes: HttpStatus } = require("http-status-codes"); // Import HTTP status codes for response handling
+const createError = require("http-errors"); // Import createError for generating HTTP errors
+const { createCategorySchema } = require("../../validation/admin/categorySchema"); // Import validation schema for category creation
 
-class CategoryController extends Controller{
-    async createCategory(req, res, next){
+/**
+ * Controller class for handling category-related operations.
+ * @extends Controller
+ */
+class CategoryController extends Controller {
+    /**
+     * Creates a new category.
+     * @param {Request} req - Express request object.
+     * @param {Response} res - Express response object.
+     * @param {NextFunction} next - Express next middleware function.
+     * @returns {Response} - HTTP response with the result.
+     */
+    async createCategory(req, res, next) {
         try {
+            // Validate request body against schema
             await createCategorySchema.validateAsync(req.body);
-            const{title, parent} = req.body;
-            const category = await CategoryModel.create({title, parent});
-            if(!category) throw createError.InternalServerError("Internal Server Error");
 
+            // Extract title and parent from request body
+            const { title, parent } = req.body;
+
+            // Convert empty string to null for parent field
+            const parentValue = parent === "" ? null : parent;
+
+            // Create category in the database
+            const category = await CategoryModel.create({ title, parent: parentValue });
+
+            // Check if category was created successfully
+            if (!category) {
+                // If category creation fails, throw internal server error
+                throw createError.InternalServerError("Failed to create category");
+            }
+
+            // Respond with success message
             return res.status(HttpStatus.CREATED).json({
                 statusCode: HttpStatus.CREATED,
                 data: {
-                    message: "Category added successfully"
+                    message: "Category created successfully"
                 }
-            })
+            });
         } catch (error) {
+            // Handle validation errors or internal server errors
             next(error);
         }
     }
 }
 
+// Export an instance of the CategoryController
 module.exports = {
-    CategoryController : new CategoryController()
-}
+    CategoryController: new CategoryController()
+};
