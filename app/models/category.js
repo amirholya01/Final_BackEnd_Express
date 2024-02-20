@@ -12,7 +12,7 @@ const CategorySchema = new mongoose.Schema({
     // Title of the category
     title: { type: String, required: true },
     // Parent category ID (reference to Category entity)
-    parent: { type: mongoose.Types.ObjectId, ref: "category", default: undefined }
+    parent: { type: mongoose.Types.ObjectId, ref: "category", default: null }
 });
 
 // Create and export the CategoryModel using the CategorySchema
