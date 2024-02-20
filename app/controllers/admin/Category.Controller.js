@@ -75,6 +75,21 @@ class CategoryController extends Controller {
             next(error);
         }
     }
+
+
+    async getChildernOfParents(req, res, next){
+        try {
+            const parent = req.params;
+            const children = await CategoryModel.find({parent}, {__v: 0, });
+            return res.status(HttpStatus.OK).json({
+                data: {
+                    children
+                }
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 // Export an instance of the CategoryController
