@@ -26,7 +26,11 @@ router.get("/category/all", CategoryController.getAllCategories);
 
 router.delete("/category/remove/:id", CategoryController.removeCategory);
 
+router.get("/category/list-of-all", CategoryController.getAllCategoryWithoutPopulate);
+
 router.get("/category/:id", CategoryController.getCategoryById);
+
+router.patch("/category/update/:id", CategoryController.editCategory);
 module.exports = {
     AdminApiCategoryRouter : router
 }
