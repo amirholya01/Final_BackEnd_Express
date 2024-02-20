@@ -41,6 +41,7 @@ class CategoryController extends Controller {
             return res.status(HttpStatus.CREATED).json({
                 statusCode: HttpStatus.CREATED,
                 data: {
+                    statusCode: 200,
                     message: "Category created successfully"
                 }
             });
@@ -68,6 +69,7 @@ class CategoryController extends Controller {
             // Returning JSON response with parent categories
             return res.status(HttpStatus.OK).json({
                 data: {
+                    statusCode: 200,
                     parents
                 }
             })
@@ -83,6 +85,7 @@ class CategoryController extends Controller {
             const children = await CategoryModel.find({parent}, {__v: 0, });
             return res.status(HttpStatus.OK).json({
                 data: {
+                    statusCode: 200,
                     children
                 }
             })
@@ -108,12 +111,72 @@ class CategoryController extends Controller {
             // Returning JSON response with top-level categories
             return res.status(HttpStatus.OK).json({
                 data: {
+                    statusCode: 200,
                     categories
                 }
             })
         } catch (error) {
             next(error);
         }
+    }
+
+
+
+
+    /**
+ * Removes a category and its children from the database.
+ * If the category does not exist, it throws a 'Not Found' error.
+ * @param {Object} req - Express request object containing the category ID in params
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ * @returns {Object} - JSON response indicating successful deletion
+ * @throws {Error} - 'Not Found' error if the category does not exist, 'Internal Server Error' if deletion fails
+ */
+    async removeCategory(req, res, next){
+        try {
+
+            // Extracting category ID from request parameters
+            const {id} = req.params;
+
+            // Checking if the category exists, throws error if not found
+            const category = await this.checkExistCategory(id);
+
+            // Deleting the category and its children from the database
+            const deleteResult = await CategoryModel.deleteMany({
+                $or: [{_id: category._id}, {parent: category._id}]
+            });
+
+            // If no category was deleted, throw 'Internal Server Error'
+            if(deleteResult.deletedCount == 0)
+                throw createError.InternalServerError("Uncategorized failed");
+
+            // Returning success message upon successful deletion
+            return res.status(HttpStatus.OK).json({
+                statusCode: HttpStatus.OK,
+                data:{
+                    message: "Deleting a category was successfully"
+                }
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
+    /**
+ * Checks if a category with the given ID exists in the database.
+ * If the category does not exist, it throws a 'Not Found' error.
+ * @param {string} id - The ID of the category to check for existence
+ * @returns {Object} - The found category object
+ * @throws {Error} - 'Not Found' error if the category does not exist
+ */
+    async checkExistCategory(id){
+
+        // Find the category by its ID in the database
+        const category = await CategoryModel.findById(id);
+        // If the category does not exist, throw a 'Not Found' error
+        if(!category) throw createError.NotFound("The category was not found");
+        return category;
     }
 }
 
