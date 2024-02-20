@@ -23,6 +23,8 @@ router.get("/category/parents", CategoryController.getAllParents);
 router.get("/category/children/:parent", CategoryController.getChildernOfParents);
 
 router.get("/category/all", CategoryController.getAllCategories);
+
+router.delete("/category/remove/:id", CategoryController.removeCategory);
 module.exports = {
     AdminApiCategoryRouter : router
 }
