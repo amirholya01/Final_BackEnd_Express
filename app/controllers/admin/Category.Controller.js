@@ -216,6 +216,37 @@ class CategoryController extends Controller {
       }
 
 
+
+
+      /**
+ * Retrieves all categories without populating child categories.
+ * @async
+ * @function getAllCategoryWithoutPopulate
+ * @param {object} req - The request object.
+ * @param {object} res - The response object.
+ * @param {function} next - The next middleware function.
+ * @returns {object} The response containing retrieved categories.
+ * @throws {Error} If an error occurs during the operation.
+ */
+      async getAllCategoryWithoutPopulate(req, res, next) {
+        try {
+
+          // Retrieve all categories without populating child categories
+          const categories = await CategoryModel.aggregate([{ $match: {} }]);
+
+          // Return the retrieved categories in the response
+          return res.status(HttpStatus.OK).json({
+            statusCode: HttpStatus.OK,
+            data: {
+              categories,
+            },
+          });
+        } catch (error) {
+          next(error);
+        }
+      }
+
+
     /**
  * Checks if a category with the given ID exists in the database.
  * If the category does not exist, it throws a 'Not Found' error.
