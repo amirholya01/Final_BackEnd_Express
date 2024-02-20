@@ -49,6 +49,32 @@ class CategoryController extends Controller {
             next(error);
         }
     }
+
+
+
+    /**
+ * Retrieves all parent categories from the database.
+ * Parent categories are those with no parent specified.
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ * @returns {Object} - JSON response with parent categories
+ */
+
+    async getAllParents(req, res, next){
+        try {
+            // Finding all categories with no parent specified
+            const parents = await CategoryModel.find({parent: null});
+            // Returning JSON response with parent categories
+            return res.status(HttpStatus.OK).json({
+                data: {
+                    parents
+                }
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 // Export an instance of the CategoryController
