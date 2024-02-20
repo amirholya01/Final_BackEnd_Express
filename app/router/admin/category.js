@@ -30,6 +30,7 @@ router.get("/category/list-of-all", CategoryController.getAllCategoryWithoutPopu
 
 router.get("/category/:id", CategoryController.getCategoryById);
 
+router.patch("/category/update/:id", CategoryController.editCategory);
 module.exports = {
     AdminApiCategoryRouter : router
 }

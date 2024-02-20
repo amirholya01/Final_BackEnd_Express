@@ -3,7 +3,7 @@ const Controller = require("../Controller"); // Import the base controller
 const { CategoryModel } = require("../../models/category"); // Import the CategoryModel for interacting with the database
 const { StatusCodes: HttpStatus } = require("http-status-codes"); // Import HTTP status codes for response handling
 const createError = require("http-errors"); // Import createError for generating HTTP errors
-const { createCategorySchema } = require("../../validation/admin/categorySchema"); // Import validation schema for category creation
+const { createCategorySchema, updateCategorySchema } = require("../../validation/admin/categorySchema"); // Import validation schema for category creation
 
 /**
  * Controller class for handling category-related operations.
@@ -163,7 +163,50 @@ class CategoryController extends Controller {
     }
 
 
+    /**
+ * Edits an existing category.
+ * @async
+ * @function editCategory
+ * @param {object} req - The request object containing parameters and body.
+ * @param {object} res - The response object to send back the result.
+ * @param {function} next - The next middleware function.
+ * @returns {object} The response indicating the result of the edit operation.
+ * @throws {Error} If an error occurs during the operation.
+ */
+    async editCategory(req, res, next){
+        try {
 
+            // Extracting id from request parameters and title from request body
+            const { id } = req.params;
+            const { title } = req.body;
+
+            // Checking if the category exists
+            const category = await this.checkExistCategory(id);
+
+            // Validating the request body for updating category
+            await updateCategorySchema.validateAsync(req.body);
+
+            // Updating the category
+            const resultOfUpdate = await CategoryModel.updateOne(
+                { _id: id },
+                { $set: {title} }
+            );
+
+            // Checking if the update operation was successful
+            if (resultOfUpdate.modifiedCount == 0)
+                throw createError.InternalServerError("Update failed" );
+
+            // Returning success message if the update was successful
+            return res.status(HttpStatus.OK).json({
+                    statusCode: HttpStatus.OK,
+                    data: {
+                        message: "Updating was done successfully",
+                    },
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
 
 
         /**
