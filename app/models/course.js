@@ -24,6 +24,10 @@ const CourseSchema = new mongoose.Schema({
     chapters: {type: [Chapter], default: []},
     teacher: {type: mongoose.Types.ObjectId, ref: "user", required: true}
 })
+CourseSchema.index({
+    title: "text",
+    description: "text"
+})
 
 module.exports = {
     CourseModel : mongoose.model("course", CourseSchema)

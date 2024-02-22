@@ -7,6 +7,11 @@ const router = require("express").Router();
  *      get:
  *          tags: [Course(admin-panel)]
  *          summary: Get all courses - List of courses
+ *          parameters:
+ *              -   in: query
+ *                  name: search
+ *                  type: text
+ *                  description: search in course section with title and description
  *          responses:
  *              200:
  *                  description: success
