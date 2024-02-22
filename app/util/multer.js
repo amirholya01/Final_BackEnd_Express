@@ -17,7 +17,6 @@ function createRoute(req) {
   const directory = path.join(
     __dirname,
     "..",
-    "..",
     "public",
     "uploads",
     "blogs",
