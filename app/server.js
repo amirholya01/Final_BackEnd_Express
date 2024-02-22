@@ -52,6 +52,8 @@ module.exports = class Application{
         this.#app.use(this.#express.urlencoded({extended : true}));  // Parse URL-encoded request bodies
         this.#app.use(cookieParser());  // Parse Cookie header and populate req.cookies
 
+
+
         this.#app.use("/api-docs",swaggerUi.serve, swaggerUi.setup(swaggerJsDoc({
             swaggerDefinition: {
                 openApi: "3.0.0",
@@ -60,7 +62,8 @@ module.exports = class Application{
                     version: "1.0.0",
                     description: "Rest Api - category- course- user- blog ....",
                     contact: {
-                        name: "Amir Hossein Olyanasab Narab"
+                        name: "Amir Hossein Olyanasab Narab",
+                        email: "amirholyanasabnarab@gmail.com"
                     },
                 },
                 servers: [
@@ -70,7 +73,9 @@ module.exports = class Application{
                 ],
             },
             apis: ["./app/router/**/*.js"]
-        })))
+        }),
+        {explorer: true}
+        ))
     }
 
 
@@ -124,6 +129,9 @@ module.exports = class Application{
         this.#app.use(AllRoutes);
     }
 
+
+
+    
 
 
      /**
