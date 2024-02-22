@@ -41,7 +41,6 @@ router.get("/", BlogController.getListOfBlog);
  *              -   in: formData
  *                  name: category
  *                  type: string
- *                  required: true
  *              -   in: formData
  *                  name: image
  *                  type: file
