@@ -22,7 +22,7 @@ const CourseSchema = new mongoose.Schema({
     tags: {type: [String], default: []},
     category: {type: mongoose.Types.ObjectId, ref: "category", required: true},
     chapters: {type: [Chapter], default: []},
-    teacher: {type: mongoose.Types.ObjectId, ref: "user", required: true}
+   // teacher: {type: mongoose.Types.ObjectId, ref: "user", required: true}
 })
 CourseSchema.index({
     title: "text",
