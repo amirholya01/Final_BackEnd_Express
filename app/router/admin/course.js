@@ -86,6 +86,8 @@ router.get("/all",CourseController.getAllCourses);
  *                  description: success to create a new course
  */
 router.post("/create", uploadFile.single("image"), stringToArray("tags"), CourseController.createCourse);
+
+router.get("/:id", CourseController.getCourseById);
 module.exports = {
     AdminApiCourseRouter : router
 }
